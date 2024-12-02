@@ -3,6 +3,7 @@ import re
 import csv
 import os
 import matplotlib.pyplot as plt
+import sys
 
 def extract_text_from_pdf(pdf_path):
     document = fitz.open(pdf_path)
@@ -78,10 +79,12 @@ def create_pie_chart_from_csv(csv_path):
     ax.set_title('Distribuição de Valores')
 
     plt.show()
+if len(sys.argv) > 1:
+    folder_path = sys.argv[1]
+else:
+    folder_path = r'DESPESAS\4. Abril'
 
-folder_path = r'Pacto Financias\DESPESAS\4. Abril'
-
-csv_path = r'dados.csv'
+csv_path = r'../../dados.csv'
 
 process_pdfs_in_folder(folder_path, csv_path)
 
