@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\shell\run_converter_script]
+@="GERAR GRÁFICO"
+
+[HKEY_CLASSES_ROOT\*\shell\run_converter_script\command]
+@="cmd /k python C:\\Thalysson\\VisualCodeScripts\\Codigos\\github\\Pacto-Project\\Converter.py \"%1\""
