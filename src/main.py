@@ -16,6 +16,10 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 def process_pdfs_in_folder(folder_path, csv_path, excel_path):
+    if not os.path.exists(folder_path):
+        print(f"Error: The folder '{folder_path}' does not exist.")
+        return
+
     data = {}
     for filename in os.listdir(folder_path):
         if filename.endswith('.pdf'):
@@ -39,6 +43,10 @@ def process_pdfs_in_folder(folder_path, csv_path, excel_path):
                 else:
                     data[nome] = valor
 
+    csv_dir = os.path.dirname(csv_path)
+    if not os.path.exists(csv_dir):
+        os.makedirs(csv_dir)
+
     with open(csv_path, 'w', newline='') as csvfile:
         fieldnames = ['Nome', 'Valor']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -53,8 +61,13 @@ def process_pdfs_in_folder(folder_path, csv_path, excel_path):
     plt.ylabel('Valor')
     plt.title('Valores por Nome')
     plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-    plt.savefig('src/images/grafico.png')
+    plt.subplots_adjust(bottom=0.3)  # Adjust the bottom margin to avoid warning
+
+    image_dir = os.path.dirname('src/images/grafico.png')
+    if not os.path.exists(image_dir):
+        os.makedirs(image_dir)
+
+    plt.savefig('src/images/grafico.png', bbox_inches='tight')
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active
@@ -62,7 +75,7 @@ def process_pdfs_in_folder(folder_path, csv_path, excel_path):
     sheet.add_image(img, 'A1')
     workbook.save(excel_path)
 
-folder_path = r'DESPESAS\4. Abril'  
+folder_path = r'src\DESPESAS\4. Abril'  
 csv_path = r'src\data\dados.csv'
 excel_path = r'src\data\graph.xlsx'
 process_pdfs_in_folder(folder_path, csv_path, excel_path)
